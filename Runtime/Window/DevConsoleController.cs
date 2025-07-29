@@ -1,15 +1,16 @@
+using System;
+using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace DevConsole
+namespace DevConsole.Window
 {
     public class DevConsoleController : MonoBehaviour
     {
         [SerializeField] private KeyCode _consoleOpenKeycode = KeyCode.Tilde;
         [SerializeField] private GameObject _content;
 
-        [SerializeField] private UnityEvent _onOpen;
-        [SerializeField] private UnityEvent _onClose;
+        public static event Action OnOpen;
+        public static event Action OnClose;
         
         internal bool IsOpened => _content.activeSelf;
         
@@ -20,7 +21,7 @@ namespace DevConsole
             {
                 for (int i = 0, c = transform.childCount; i < c; i++)
                 {
-                    var child = transform.GetChild(i);
+                    Transform child = transform.GetChild(i);
                     if (child.name.Equals("Content"))
                     {
                         _content = child.gameObject;
@@ -30,6 +31,7 @@ namespace DevConsole
             }
         }
 #endif
+        
         private void Start()
         {
             if (IsOpened)
@@ -52,39 +54,24 @@ namespace DevConsole
         }
         
         [ContextMenu(nameof(Open))]
-        public void Open()
+        private void Open()
         {
             if (IsOpened == false)
             {
-                // TODO: invoke opening animation
-            
-                ForceOpen();
+                _content.SetActive(true);
+                OnOpen?.Invoke();
             }
         }
 
         [ContextMenu(nameof(Close))]
+        [UsedImplicitly]
         public void Close()
         {
             if (IsOpened)
             {
-                // TODO: invoke closing animation
-                
-                ForceClose();
+                _content.SetActive(false);
+                OnClose?.Invoke();
             }
-        }
-
-        private void ForceOpen()
-        {
-            _content.SetActive(true);
-            
-            _onOpen?.Invoke();
-        }
-
-        private void ForceClose()
-        {
-            _content.SetActive(false);
-            
-            _onClose?.Invoke();
         }
     }
 }

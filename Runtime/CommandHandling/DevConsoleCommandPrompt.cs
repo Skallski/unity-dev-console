@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace DevConsole.Commands
+namespace DevConsole.CommandHandling
 {
     public class DevConsoleCommandPrompt : MonoBehaviour
     {
         [SerializeField] private TMPro.TMP_InputField _inputField;
-        [SerializeField] private DevConsoleCommandHandler _commandHandler;
         
         [Space]
         [SerializeField] private bool _allowCachingCommands = true;
@@ -20,11 +19,6 @@ namespace DevConsole.Commands
             if (_inputField == null)
             {
                 _inputField = GetComponentInChildren<TMPro.TMP_InputField>();
-            }
-            
-            if (_commandHandler == null)
-            {
-                _commandHandler = GetComponent<DevConsoleCommandHandler>();
             }
         }
 #endif
@@ -101,7 +95,7 @@ namespace DevConsole.Commands
                 return;
             }
 
-            _commandHandler.HandleCommand(text);
+            DevConsoleCommandHandler.HandleCommand(text);
             
             _cachedCommands.Add(text);
             _currentCachedCommandIndex = _cachedCommands.Count;

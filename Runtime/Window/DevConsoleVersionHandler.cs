@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace DevConsole
+namespace DevConsole.Window
 {
     public class DevConsoleVersionHandler : MonoBehaviour
     {

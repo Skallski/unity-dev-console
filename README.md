@@ -39,5 +39,5 @@ Then You can use following commands:
 The CommandPrompt functionality if easily scalable, so You can add more comands that will suit Your needs.
 
 ### Instalation
-This is an embeded Unity package. In order to install it, use package manager tool (Window -> Package Manager). <br>
+This is an embedded Unity package. In order to install it, use package manager tool (Window -> Package Manager). <br>
 Then import package by git url or locally from disk.

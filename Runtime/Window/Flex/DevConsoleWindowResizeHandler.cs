@@ -6,11 +6,13 @@ namespace DevConsole.Window.Flex
 {
     public class DevConsoleWindowResizeHandler : DevConsoleWindowFlexBase
     {
+        private readonly bool _allowResize = true;
+        private readonly bool _resetSizeOnOpen = true;
+        
         private bool _isResizable;
         private Vector2 _onPtrDownMousePos;
         private Vector2 _onPtrDownWindowPos;
         private Vector2 _onPtrDownWindowSize;
-        
         private Vector2 _windowScale;
         private Vector2 _windowSizeMax;
 
@@ -29,7 +31,7 @@ namespace DevConsole.Window.Flex
 
         private void OnEnable()
         {
-            if (_resetOnOpen)
+            if (_resetSizeOnOpen)
             {
                 Window.sizeDelta = _windowSizeMax;
             }
@@ -38,7 +40,7 @@ namespace DevConsole.Window.Flex
         [UsedImplicitly]
         public void OnPointerDown(BaseEventData eventData)
         {
-            if (_allow == false)
+            if (_allowResize == false)
             {
                 return;
             }
@@ -63,7 +65,7 @@ namespace DevConsole.Window.Flex
         [UsedImplicitly]
         public void OnPointerUp()
         {
-            if (_allow == false)
+            if (_allowResize == false)
             {
                 return;
             }
@@ -74,7 +76,7 @@ namespace DevConsole.Window.Flex
         [UsedImplicitly]
         public void OnDrag(BaseEventData eventData)
         {
-            if (_allow == false)
+            if (_allowResize == false)
             {
                 return;
             }

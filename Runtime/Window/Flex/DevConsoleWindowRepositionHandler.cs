@@ -6,9 +6,11 @@ namespace DevConsole.Window.Flex
 {
     public class DevConsoleWindowRepositionHandler : DevConsoleWindowFlexBase
     {
+        private readonly bool _allowReposition = true;
+        private readonly bool _resetPositionOnOpen = true;
+        
         private bool _isDraggable;
         private Vector2 _dragBounds;
-
         private Vector2 _defaultPosition;
 
         protected override void Awake()
@@ -20,7 +22,7 @@ namespace DevConsole.Window.Flex
 
         private void OnEnable()
         {
-            if (_resetOnOpen)
+            if (_resetPositionOnOpen)
             {
                 float offsetWidth = _parentCanvas.pixelRect.width / 4;
                 Window.offsetMin = new Vector2(offsetWidth, Window.offsetMin.y);
@@ -49,7 +51,7 @@ namespace DevConsole.Window.Flex
         [UsedImplicitly]
         public void OnDrag(BaseEventData eventData)
         {
-            if (_allow == false)
+            if (_allowReposition == false)
             {
                 return;
             }

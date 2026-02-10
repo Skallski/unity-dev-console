@@ -6,10 +6,6 @@ namespace DevConsole.Window.Flex
     {
         [SerializeField] protected Canvas _parentCanvas;
 
-        [Space] 
-        [SerializeField] protected bool _allow = true;
-        [SerializeField] protected bool _resetOnOpen = true;
-
         protected RectTransform Window { get; private set; }
         
         private static Canvas FindParentCanvas(Transform current)

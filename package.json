@@ -1,6 +1,6 @@
 {
   "name": "com.skallski.dev-console",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "displayName": "Dev Console",
   "description": "Lightweight UI based developer console.",
   "unity": "2021.3",

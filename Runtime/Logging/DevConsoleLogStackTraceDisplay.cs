@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace DevConsole.Logging
@@ -5,9 +6,9 @@ namespace DevConsole.Logging
     public class DevConsoleLogStackTraceDisplay : MonoBehaviour
     {
         [SerializeField] private RectTransform _stackTraceTransform;
-        [SerializeField] private float _basePositionY = -30;
-        [SerializeField] private float _baseHeight = 60;
         [SerializeField] private TMPro.TextMeshProUGUI _stackTraceLabel;
+        [SerializeField] private UnityEngine.UI.ScrollRect _scrollRect;
+        [SerializeField] private GameObject _copyToClipboardButtonObj;
 
         private DevConsoleLogData _selectedLog;
 
@@ -22,7 +23,7 @@ namespace DevConsole.Logging
             DevConsoleLogger.OnClear -= ClearStackTrace;
             DevConsoleLogLabel.OnLogClick -= OnLogClick;
         }
-        
+
         private void OnLogClick(DevConsoleLogData data)
         {
             if (data == null)
@@ -52,27 +53,29 @@ namespace DevConsole.Logging
             _stackTraceTransform.gameObject.SetActive(true);
             _stackTraceLabel.SetText(_selectedLog?.StackTrace ?? string.Empty);
 
-            float height = _stackTraceLabel.preferredHeight;
-            if (height < 60)
-            {
-                height = 60;
-            }
-
-            _stackTraceTransform.sizeDelta = new Vector2(_stackTraceTransform.sizeDelta.x, height);
-
-            float desiredPositionY = _basePositionY - (height - _baseHeight) / 2f;
-            _stackTraceTransform.anchoredPosition =
-                new Vector2(_stackTraceTransform.anchoredPosition.x, desiredPositionY);
+            _scrollRect.verticalNormalizedPosition = 1f;
+            
+            _copyToClipboardButtonObj.SetActive(true);
         }
 
         private void ClearStackTrace()
         {
             _stackTraceLabel.SetText(string.Empty);
-            
-            _stackTraceTransform.sizeDelta = new Vector2(_stackTraceTransform.sizeDelta.x, _baseHeight);
-            _stackTraceTransform.anchoredPosition = new Vector2(_stackTraceTransform.anchoredPosition.x, _basePositionY);
-            
             _stackTraceTransform.gameObject.SetActive(false);
+            
+            _copyToClipboardButtonObj.SetActive(false);
+        }
+
+        [UsedImplicitly]
+        public void CopyStackTraceToClipboard()
+        {
+            if (_selectedLog == null)
+            {
+                return;
+            }
+            
+            GUIUtility.systemCopyBuffer = $"{_selectedLog.FormattedMessage}\n\n{_selectedLog.StackTrace}";
+            Debug.Log("Log copied to clipboard.");
         }
     }
 }
